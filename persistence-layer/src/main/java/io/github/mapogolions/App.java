@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class App {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try (var db = new Db("persistence.unit")) {
             db.transaction(
                     entityManager -> {
@@ -17,6 +17,8 @@ public class App {
                         var result = entityManager.createNativeQuery(query, Person.class).getSingleResult();
                         System.out.println(result);
                     });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
