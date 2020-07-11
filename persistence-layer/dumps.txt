@@ -1,0 +1,99 @@
+### `Samples.sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible()`
+```sh
+Hibernate:
+    select
+        nextval ('hibernate_sequence')
+Hibernate:
+    select
+        nextval ('hibernate_sequence')
+Hibernate:
+    insert
+    into
+        public.person
+        (country_of_birth, date_of_birth, email, first_name, gender, last_name, id)
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate:
+    insert
+    into
+        public.person
+        (country_of_birth, date_of_birth, email, first_name, gender, last_name, id)
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+```
+
+### `Samples.identityGenerationStrategyInsertsRecordsImmediately()`
+```sh
+Hibernate:
+    insert
+    into
+        public.hero
+        (name)
+    values
+        (?)
+Hibernate:
+    insert
+    into
+        public.hero
+        (name)
+    values
+        (?)
+```
+
+### `Samples.mergeOnlyInsertsRecordWhenSurrogatePrimaryKeyIsUsed()`
+```sh
+Hibernate:
+    insert
+    into
+        public.hero
+        (name)
+    values
+        (?)
+```
+
+### `Samples.mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed()`
+
+```sh
+Hibernate:
+    select
+        book0_.isbn as isbn1_0_0_,
+        book0_.author as author2_0_0_
+    from
+        public.book book0_
+    where
+        book0_.isbn=?
+Hibernate:
+    insert
+    into
+        public.book
+        (author, isbn)
+    values
+        (?, ?)
+```
+
+### `Samples.trackingManagedRecordState()`
+
+```sh
+Hibernate:
+    select
+        nextval ('hibernate_sequence')
+Hibernate:
+    insert
+    into
+        public.person
+        (country_of_birth, date_of_birth, email, first_name, gender, last_name, id)
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate:
+    update
+        public.person
+    set
+        country_of_birth=?,
+        date_of_birth=?,
+        email=?,
+        first_name=?,
+        gender=?,
+        last_name=?
+    where
+
+
