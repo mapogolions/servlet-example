@@ -1,4 +1,4 @@
-package io.github.mapogolions;
+package io.github.mapogolions.model;
 
 public enum Gender {
     MALE,

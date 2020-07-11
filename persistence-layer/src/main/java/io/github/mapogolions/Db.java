@@ -8,25 +8,38 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-public class Db implements Closeable {
+public class Db implements Closeable  {
     private final EntityManagerFactory factory;
 
     public Db(String unit) {
         this.factory = Persistence.createEntityManagerFactory(unit);
     }
 
-    public void transaction(Consumer<EntityManager> ...fs) {
+    public void atomic(Consumer<EntityManager> ...chunks) {
         var entityManager = factory.createEntityManager();
         var transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            Arrays.stream(fs).forEach(fn -> fn.accept(entityManager));
+            Arrays.stream(chunks).forEach(chunk -> chunk.accept(entityManager));
             transaction.commit();
         } catch (Exception ex) {
             transaction.rollback();
             ex.printStackTrace();
         } finally {
             entityManager.close();
+            factory.close();
+        }
+    }
+
+    public static Db unit(String unit) {
+        return new Db(unit);
+    }
+
+    public static void session(Consumer<EntityManager> ...chunks) {
+        try (var db = new Db("hibernate.cli.test.unit")) {
+            db.atomic(chunks);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

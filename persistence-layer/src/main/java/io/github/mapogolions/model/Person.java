@@ -1,14 +1,14 @@
-package io.github.mapogolions;
+package io.github.mapogolions.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "persons", schema = "public")
+@Table(name = "person", schema = "public")
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -20,7 +20,7 @@ public class Person {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Transient
+    @Column(nullable = false)
     private String email;
 
     @Column(name = "date_of_birth", nullable = false)
@@ -39,6 +39,10 @@ public class Person {
     }
 
     public Person() {}
+
+    public void email(String email) {
+        this.email = email;
+    }
 
     @Override
     public String toString() {
