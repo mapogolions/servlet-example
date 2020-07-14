@@ -12,10 +12,10 @@ import java.time.LocalDate;
 public class Samples {
     public static void sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible() {
         session(
-                context(entityManager ->
-                    entityManager.persist(new Person("Some", "One", Gender.MALE,
+                context(
+                        entityManager -> entityManager.persist(new Person("Some", "One", Gender.MALE,
                             "someone@gmail.com", LocalDate.of(2020, 02, 15), "Columbia")),
-                    entityManager -> entityManager.persist(new Person("John", "Doe", Gender.MALE,
+                        entityManager -> entityManager.persist(new Person("John", "Doe", Gender.MALE,
                             "johndoe@gmail.com", LocalDate.of(2020, 02, 15), "USA"))
                 )
         );
