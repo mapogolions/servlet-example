@@ -15,32 +15,31 @@ public class Db implements Closeable  {
         this.factory = Persistence.createEntityManagerFactory(unit);
     }
 
-    public void atomic(Consumer<EntityManager> ...chunks) {
+    public void runInPersistentContext(Consumer<EntityManager> fn) {
         var entityManager = factory.createEntityManager();
         var transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            Arrays.stream(chunks).forEach(chunk -> chunk.accept(entityManager));
+            fn.accept(entityManager);
             transaction.commit();
         } catch (Exception ex) {
             transaction.rollback();
             ex.printStackTrace();
         } finally {
             entityManager.close();
-            factory.close();
         }
     }
 
-    public static Db unit(String unit) {
-        return new Db(unit);
-    }
-
-    public static void session(Consumer<EntityManager> ...chunks) {
-        try (var db = new Db("hibernate.cli.test.unit")) {
-            db.atomic(chunks);
+    public static void session(Consumer<EntityManager> ...fs) {
+        try (var db = new Db("io.github.mapogolions")) {
+            Arrays.asList(fs).forEach(fn -> db.runInPersistentContext(fn));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Consumer<EntityManager> context(Consumer<EntityManager> ...fs) {
+        return entityManager -> Arrays.asList(fs).forEach(fn -> fn.accept(entityManager));
     }
 
     @Override

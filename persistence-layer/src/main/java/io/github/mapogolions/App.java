@@ -1,12 +1,15 @@
 package io.github.mapogolions;
 
+import static io.github.mapogolions.Samples.*;
+
 public class App {
     public static void main(String[] args) {
-        Samples.sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible();
-//        Samples.identityGenerationStrategyInsertsRecordsImmediately();
-//        Samples.mergeOnlyInsertsRecordWhenSurrogatePrimaryKeyIsUsed();
-//        Samples.mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed();
-//        Samples.trackingManagedRecordState();
+        sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible();
+//        identityGenerationStrategyInsertsRecordsImmediately();
+//        mergeUpdatesOnlyWhenNecessary();
+//        mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed();
+//        mergeHasOnlyInsertionSemanticWhenSurrogatePrimaryKeyIsUsed();
+//        trackingManagedRecordState();
     }
 }
 
