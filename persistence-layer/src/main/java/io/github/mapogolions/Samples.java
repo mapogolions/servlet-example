@@ -10,6 +10,19 @@ import static io.github.mapogolions.Db.context;
 import java.time.LocalDate;
 
 public class Samples {
+    public static void retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity() {
+        session(entityManager -> entityManager.find(Hero.class, 1L));
+    }
+
+    public static void retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache() {
+        session(
+                context(
+                        entityManager -> entityManager.persist(new Hero("true hero")),
+                        entityManager -> entityManager.find(Hero.class, 1L)
+                )
+        );
+    }
+
     public static void sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible() {
         session(
                 context(
