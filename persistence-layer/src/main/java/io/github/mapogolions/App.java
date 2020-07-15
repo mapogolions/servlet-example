@@ -4,7 +4,9 @@ import static io.github.mapogolions.Samples.*;
 
 public class App {
     public static void main(String[] args) {
-        retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity();
+//        retrievalsCanAvoidRetryingWithinSingleTransaction();
+//        firstLevelCacheHasNotCrossTransactionNature();
+//        retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity();
 //        retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache();
 //        sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible();
 //        identityGenerationStrategyInsertsRecordsImmediately();

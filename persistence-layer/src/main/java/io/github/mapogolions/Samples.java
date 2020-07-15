@@ -10,6 +10,24 @@ import static io.github.mapogolions.Db.context;
 import java.time.LocalDate;
 
 public class Samples {
+    public static void retrievalsCanAvoidRetryingWithinSingleTransaction() {
+        session(
+                entityManager -> entityManager.persist(new Hero("true hero")),
+                context(
+                        entityManager -> entityManager.find(Hero.class, 1L),
+                        entityManager -> entityManager.find(Hero.class, 1L)
+                )
+        );
+    }
+
+    public static void firstLevelCacheHasNotCrossTransactionNature() {
+        session(
+                entityManager -> entityManager.persist(new Hero("true hero")),
+                entityManager -> entityManager.find(Hero.class, 1L),
+                entityManager -> entityManager.find(Hero.class, 1L)
+        );
+    }
+
     public static void retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity() {
         session(entityManager -> entityManager.find(Hero.class, 1L));
     }
