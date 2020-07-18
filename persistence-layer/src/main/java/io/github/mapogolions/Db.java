@@ -15,35 +15,72 @@ public class Db implements Closeable  {
         this.factory = Persistence.createEntityManagerFactory(unit);
     }
 
-    public void runInPersistentContext(Consumer<EntityManager> fn) {
-        var entityManager = factory.createEntityManager();
-        var transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            fn.accept(entityManager);
-            transaction.commit();
-        } catch (Exception ex) {
-            transaction.rollback();
-            ex.printStackTrace();
-        } finally {
-            entityManager.close();
-        }
+    public EntityManagerFactory factory() {
+        return factory;
     }
 
-    public static void session(Consumer<EntityManager> ...fs) {
+    public static void session(Unit ...units) {
+        session(context(units));
+    }
+
+    public static void session(PersistentContext ...ctxs) {
         try (var db = new Db("io.github.mapogolions")) {
-            Arrays.asList(fs).forEach(fn -> db.runInPersistentContext(fn));
+            Arrays.asList(ctxs).forEach(ctx -> ctx.apply(db.factory()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Consumer<EntityManager> context(Consumer<EntityManager> ...fs) {
-        return entityManager -> Arrays.asList(fs).forEach(fn -> fn.accept(entityManager));
+    public static PersistentContext context(Unit ...units) {
+        return new PersistentContext(units);
+    }
+
+    public static Unit unit(Consumer<EntityManager> ...fs) {
+        return new Unit(fs);
     }
 
     @Override
     public void close() throws IOException {
         factory.close();
     }
+
+    public static class PersistentContext {
+        private final Unit[] units;
+
+        PersistentContext(Unit...transactions) {
+            this.units = transactions;
+        }
+
+        public void apply(EntityManagerFactory factory) {
+            var entityManager = factory.createEntityManager();
+            try {
+                Arrays.asList(units).forEach(unit -> unit.apply(entityManager));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                entityManager.close();
+            }
+        }
+    }
+
+    public static class Unit {
+        private final Consumer<EntityManager>[] fs;
+
+        Unit(Consumer<EntityManager> ...fs) {
+            this.fs = fs;
+        }
+
+        public void apply(EntityManager entityManager) {
+            var transaction = entityManager.getTransaction();
+            try {
+                transaction.begin();
+                Arrays.asList(fs).forEach(fn -> fn.accept(entityManager));
+                transaction.commit();
+            } catch (Exception e) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
