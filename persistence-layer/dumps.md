@@ -1,24 +1,4 @@
-### `Samples.retrievalsCanAvoidRetryingWithinSingleTransaction()`
-```sh
-Hibernate:
-    insert
-    into
-        public.hero
-        (name)
-    values
-        (?)
-Hibernate:
-    select
-        hero0_.id as id1_1_0_,
-        hero0_.name as name2_1_0_
-    from
-        public.hero hero0_
-    where
-        hero0_.id=?
-
-```
-
-### `Samples.firstLevelCacheHasNotCrossTransactionNature()`
+### `Samples.firstLevelCacheHasCrossTransactionNature()`
 ```sh
 Hibernate:
     insert
