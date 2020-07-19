@@ -9,23 +9,23 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class Db implements Closeable  {
-    private final EntityManagerFactory factory;
+    private final EntityManagerFactory emf;
 
     public Db(String unit) {
-        this.factory = Persistence.createEntityManagerFactory(unit);
+        this.emf = Persistence.createEntityManagerFactory(unit);
     }
 
-    public EntityManagerFactory factory() {
-        return factory;
+    public EntityManagerFactory entityManagerFactory() {
+        return emf;
     }
 
     public static void session(Unit ...units) {
         session(context(units));
     }
 
-    public static void session(PersistentContext ...ctxs) {
+    public static void session(PersistentContext ...contexts) {
         try (var db = new Db("io.github.mapogolions")) {
-            Arrays.asList(ctxs).forEach(ctx -> ctx.apply(db.factory()));
+            Arrays.asList(contexts).forEach(ctx -> ctx.apply(db.entityManagerFactory()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,7 @@ public class Db implements Closeable  {
 
     @Override
     public void close() throws IOException {
-        factory.close();
+        emf.close();
     }
 
     public static class PersistentContext {
@@ -51,14 +51,14 @@ public class Db implements Closeable  {
             this.units = transactions;
         }
 
-        public void apply(EntityManagerFactory factory) {
-            var entityManager = factory.createEntityManager();
+        public void apply(EntityManagerFactory emf) {
+            var em = emf.createEntityManager();
             try {
-                Arrays.asList(units).forEach(unit -> unit.apply(entityManager));
+                Arrays.asList(units).forEach(unit -> unit.apply(em));
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
-                entityManager.close();
+                em.close();
             }
         }
     }
@@ -70,11 +70,11 @@ public class Db implements Closeable  {
             this.fs = fs;
         }
 
-        public void apply(EntityManager entityManager) {
-            var transaction = entityManager.getTransaction();
+        public void apply(EntityManager em) {
+            var transaction = em.getTransaction();
             try {
                 transaction.begin();
-                Arrays.asList(fs).forEach(fn -> fn.accept(entityManager));
+                Arrays.asList(fs).forEach(fn -> fn.accept(em));
                 transaction.commit();
             } catch (Exception e) {
                 transaction.rollback();
