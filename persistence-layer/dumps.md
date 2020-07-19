@@ -1,5 +1,21 @@
+### `Samples.removeTransientObjectWithNaturalKeyExecutesSelectQuery()`
+```shell script
+Hibernate: 
+    select
+        book_.isbn,
+        book_.author as author2_0_ 
+    from
+        public.book book_ 
+    where
+        book_.isbn=?
+```
+
+### `Samples.removeTransientObjectWithSurrogateKeyDoesNothing()`
+```shell script
+```
+
 ### `Samples.nativeQueryForceExecutionDelayedWriteOperations()`
-```sh
+```shell script
 Hibernate: 
     select
         nextval ('hibernate_sequence')
@@ -34,7 +50,7 @@ Hibernate:
 ```
 
 ### `Samples.eachContextHasItsOwnFirstLevelCache()`
-```sh
+```shell script
 Hibernate: 
     insert 
     into
@@ -53,7 +69,7 @@ Hibernate:
 ```
 
 ### `Samples.firstLevelCacheHasCrossTransactionNature()`
-```sh
+```shell script
 Hibernate:
     insert
     into
@@ -81,7 +97,7 @@ Hibernate:
 ```
 
 ### `Samples.retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity()`
-```sh
+```shell script
 Hibernate:
     select
         hero0_.id as id1_1_0_,
@@ -93,7 +109,7 @@ Hibernate:
 ```
 
 ### `Samples.retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache`
-```sh
+```shell script
 Hibernate:
     insert
     into
@@ -104,7 +120,7 @@ Hibernate:
 ```
 
 ### `Samples.sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible()`
-```sh
+```shell script
 Hibernate:
     select
         nextval ('hibernate_sequence')
@@ -128,7 +144,7 @@ Hibernate:
 ```
 
 ### `Samples.identityGenerationStrategyInsertsRecordsImmediately()`
-```sh
+```shell script
 Hibernate:
     insert
     into
@@ -146,7 +162,7 @@ Hibernate:
 ```
 
 ### `mergeUpdatesOnlyWhenNecessary()`
-```sh
+```shell script
 Hibernate:
     insert
     into
@@ -166,7 +182,7 @@ Hibernate:
 
 ### `Samples.mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed()`
 
-```sh
+```shell script
 Hibernate:
     select
         book0_.isbn as isbn1_0_0_,
@@ -185,7 +201,7 @@ Hibernate:
 ```
 
 ### `mergeHasOnlyInsertionSemanticWhenSurrogatePrimaryKeyIsUsed()`
-```sh
+```shell script
 Hibernate:
     insert
     into
@@ -197,7 +213,7 @@ Hibernate:
 
 ### `Samples.trackingManagedRecordState()`
 
-```sh
+```shell script
 Hibernate:
     select
         nextval ('hibernate_sequence')

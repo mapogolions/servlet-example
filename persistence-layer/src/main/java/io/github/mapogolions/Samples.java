@@ -8,6 +8,18 @@ import java.time.LocalDate;
 import static io.github.mapogolions.Db.*;
 
 public class Samples {
+    public static void removeTransientObjectWithNaturalKeyExecutesSelectQuery() {
+        session(
+                unit(em -> em.remove(new Book("1a", "who")))
+        );
+    }
+
+    public static void removeTransientObjectWithSurrogateKeyDoesNothing() {
+        session(
+                unit(em -> em.remove(new Hero()))
+        );
+    }
+
     public static void forceExecuteDelayedWriteOperation() {
         session(
                 unit(
