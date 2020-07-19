@@ -23,7 +23,7 @@ public class Db implements Closeable  {
         session(context(units));
     }
 
-    public static void session(PersistentContext ...contexts) {
+    public static void session(PersistenceContext...contexts) {
         try (var db = new Db("io.github.mapogolions")) {
             Arrays.asList(contexts).forEach(ctx -> ctx.apply(db.entityManagerFactory()));
         } catch (IOException e) {
@@ -31,8 +31,8 @@ public class Db implements Closeable  {
         }
     }
 
-    public static PersistentContext context(Unit ...units) {
-        return new PersistentContext(units);
+    public static PersistenceContext context(Unit ...units) {
+        return new PersistenceContext(units);
     }
 
     public static Unit unit(Consumer<EntityManager> ...fs) {
@@ -44,10 +44,10 @@ public class Db implements Closeable  {
         emf.close();
     }
 
-    public static class PersistentContext {
+    public static class PersistenceContext {
         private final Unit[] units;
 
-        PersistentContext(Unit...transactions) {
+        PersistenceContext(Unit...transactions) {
             this.units = transactions;
         }
 

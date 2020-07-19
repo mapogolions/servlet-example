@@ -8,6 +8,27 @@ import java.time.LocalDate;
 import static io.github.mapogolions.Db.*;
 
 public class Samples {
+    public static void nothingToCommitWhenPersistenceContextIsEmpty() {
+        session(
+                unit(
+                        em -> em.persist(new Person("Some", "One", Gender.MALE,
+                                "someone@gmail.com", LocalDate.of(2020, 02, 15), "Columbia")),
+                        em -> em.persist(new Person("John", "Doe", Gender.MALE,
+                                "johndoe@gmail.com", LocalDate.of(2020, 02, 15), "USA")),
+                        em -> em.clear()
+                )
+        );
+    }
+
+    public static void detachRemoveObjectFromPersistenceContext() {
+        session(
+                unit(
+                        em -> em.persist(new Book("1a", "who")),
+                        em -> em.detach(em.find(Book.class, "1a"))
+                )
+        );
+    }
+
     public static void removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion() {
         session(
                 unit(

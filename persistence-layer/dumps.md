@@ -1,4 +1,19 @@
-### `Samples.removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion()`
+#### `nothingToCommitWhenPersistenceContextIsEmpty`
+```shell script
+Hibernate: 
+    select
+        nextval ('hibernate_sequence')
+Hibernate: 
+    select
+        nextval ('hibernate_sequence')
+```
+
+#### `detachRemoveObjectFromPersistenceContext()`
+```shell script
+
+```
+
+#### `removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion()`
 ```shell script
 Hibernate: 
     insert 
@@ -15,7 +30,7 @@ Hibernate:
         isbn=?
 ```
 
-### `Samples.removeTransientObjectWithNaturalKeyExecutesSelectQuery()`
+#### `removeTransientObjectWithNaturalKeyExecutesSelectQuery()`
 ```shell script
 Hibernate: 
     select
@@ -27,11 +42,11 @@ Hibernate:
         book_.isbn=?
 ```
 
-### `Samples.removeTransientObjectWithSurrogateKeyDoesNothing()`
+#### `removeTransientObjectWithSurrogateKeyDoesNothing()`
 ```shell script
 ```
 
-### `Samples.nativeQueryForceExecutionDelayedWriteOperations()`
+#### `nativeQueryForceExecutionDelayedWriteOperations()`
 ```shell script
 Hibernate: 
     select
@@ -66,7 +81,7 @@ Hibernate:
         person
 ```
 
-### `Samples.eachContextHasItsOwnFirstLevelCache()`
+#### `eachContextHasItsOwnFirstLevelCache()`
 ```shell script
 Hibernate: 
     insert 
@@ -85,7 +100,7 @@ Hibernate:
         hero0_.id=?
 ```
 
-### `Samples.firstLevelCacheHasCrossTransactionNature()`
+#### `firstLevelCacheHasCrossTransactionNature()`
 ```shell script
 Hibernate:
     insert
@@ -113,7 +128,7 @@ Hibernate:
 
 ```
 
-### `Samples.retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity()`
+#### `retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity()`
 ```shell script
 Hibernate:
     select
@@ -125,7 +140,7 @@ Hibernate:
         hero0_.id=?
 ```
 
-### `Samples.retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache`
+#### `retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache`
 ```shell script
 Hibernate:
     insert
@@ -136,7 +151,7 @@ Hibernate:
         (?)
 ```
 
-### `Samples.sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible()`
+#### `sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible()`
 ```shell script
 Hibernate:
     select
@@ -160,7 +175,7 @@ Hibernate:
         (?, ?, ?, ?, ?, ?, ?)
 ```
 
-### `Samples.identityGenerationStrategyInsertsRecordsImmediately()`
+#### `identityGenerationStrategyInsertsRecordsImmediately()`
 ```shell script
 Hibernate:
     insert
@@ -178,7 +193,7 @@ Hibernate:
         (?)
 ```
 
-### `mergeUpdatesOnlyWhenNecessary()`
+#### `mergeUpdatesOnlyWhenNecessary()`
 ```shell script
 Hibernate:
     insert
@@ -197,7 +212,7 @@ Hibernate:
         book0_.isbn=?
 ```
 
-### `Samples.mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed()`
+#### `mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed()`
 
 ```shell script
 Hibernate:
@@ -217,7 +232,7 @@ Hibernate:
         (?, ?)
 ```
 
-### `mergeHasOnlyInsertionSemanticWhenSurrogatePrimaryKeyIsUsed()`
+#### `mergeHasOnlyInsertionSemanticWhenSurrogatePrimaryKeyIsUsed()`
 ```shell script
 Hibernate:
     insert
@@ -228,7 +243,7 @@ Hibernate:
         (?)
 ```
 
-### `Samples.trackingManagedRecordState()`
+#### `trackingManagedRecordState()`
 
 ```shell script
 Hibernate:
