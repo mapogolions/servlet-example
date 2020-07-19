@@ -8,6 +8,19 @@ import java.time.LocalDate;
 import static io.github.mapogolions.Db.*;
 
 public class Samples {
+    public static void forceExecuteDelayedWriteOperation() {
+        session(
+                unit(
+                        em -> em.persist(new Person("Some", "One", Gender.MALE,
+                                "someone@gmail.com", LocalDate.of(2020, 02, 15), "Columbia")),
+                        em -> em.createNativeQuery("select * from person").getResultList(),
+                        em -> em.persist(new Person("John", "Doe", Gender.MALE,
+                                "johndoe@gmail.com", LocalDate.of(2020, 02, 15), "USA")),
+                        em -> em.createNativeQuery("select * from person").getResultList()
+                )
+        );
+    }
+
     public static void eachContextHasItsOwnFirstLevelCache() {
         session(
                 context(

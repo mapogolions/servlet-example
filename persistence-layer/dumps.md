@@ -1,3 +1,38 @@
+### `Samples.nativeQueryForceExecutionDelayedWriteOperations()`
+```sh
+Hibernate: 
+    select
+        nextval ('hibernate_sequence')
+Hibernate: 
+    insert 
+    into
+        public.person
+        (country_of_birth, date_of_birth, email, first_name, gender, last_name, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        * 
+    from
+        person
+
+Hibernate: 
+    select
+        nextval ('hibernate_sequence')
+Hibernate: 
+    insert 
+    into
+        public.person
+        (country_of_birth, date_of_birth, email, first_name, gender, last_name, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        * 
+    from
+        person
+```
+
 ### `Samples.eachContextHasItsOwnFirstLevelCache()`
 ```sh
 Hibernate: 

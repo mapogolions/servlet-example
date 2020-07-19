@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 public class Db implements Closeable  {
     private final EntityManagerFactory emf;
 
-    public Db(String unit) {
-        this.emf = Persistence.createEntityManagerFactory(unit);
+    public Db(String persistenceUnit) {
+        this.emf = Persistence.createEntityManagerFactory(persistenceUnit);
     }
 
     public EntityManagerFactory entityManagerFactory() {
