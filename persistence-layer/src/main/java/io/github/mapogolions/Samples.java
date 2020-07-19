@@ -8,6 +8,15 @@ import java.time.LocalDate;
 import static io.github.mapogolions.Db.*;
 
 public class Samples {
+    public static void removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion() {
+        session(
+                unit(
+                        em -> em.persist(new Book("1a", "who")),
+                        em -> em.remove(em.find(Book.class, "1a"))
+                )
+        );
+    }
+
     public static void removeTransientObjectWithNaturalKeyExecutesSelectQuery() {
         session(
                 unit(em -> em.remove(new Book("1a", "who")))

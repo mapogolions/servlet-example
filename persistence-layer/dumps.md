@@ -1,3 +1,20 @@
+### `Samples.removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion()`
+```shell script
+Hibernate: 
+    insert 
+    into
+        public.book
+        (author, isbn) 
+    values
+        (?, ?)
+Hibernate: 
+    delete 
+    from
+        public.book 
+    where
+        isbn=?
+```
+
 ### `Samples.removeTransientObjectWithNaturalKeyExecutesSelectQuery()`
 ```shell script
 Hibernate: 
