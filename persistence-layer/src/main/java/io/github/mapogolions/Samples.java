@@ -8,9 +8,15 @@ import java.time.LocalDate;
 import static io.github.mapogolions.Db.*;
 
 public class Samples {
+    public static void getReferenceOnlyCreatesProxyObject() {
+        db(
+                atomicBlock(em -> em.getReference(Hero.class, 1L))
+        );
+    }
+
     public static void nothingToCommitWhenPersistenceContextIsEmpty() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Person("Some", "One", Gender.MALE,
                                 "someone@gmail.com", LocalDate.of(2020, 02, 15), "Columbia")),
                         em -> em.persist(new Person("John", "Doe", Gender.MALE,
@@ -21,8 +27,8 @@ public class Samples {
     }
 
     public static void detachRemoveObjectFromPersistenceContext() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Book("1a", "who")),
                         em -> em.detach(em.find(Book.class, "1a"))
                 )
@@ -30,8 +36,8 @@ public class Samples {
     }
 
     public static void removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Book("1a", "who")),
                         em -> em.remove(em.find(Book.class, "1a"))
                 )
@@ -39,20 +45,20 @@ public class Samples {
     }
 
     public static void removeTransientObjectWithNaturalKeyExecutesSelectQuery() {
-        session(
-                unit(em -> em.remove(new Book("1a", "who")))
+        db(
+                atomicBlock(em -> em.remove(new Book("1a", "who")))
         );
     }
 
     public static void removeTransientObjectWithSurrogateKeyDoesNothing() {
-        session(
-                unit(em -> em.remove(new Hero()))
+        db(
+                atomicBlock(em -> em.remove(new Hero("true hero")))
         );
     }
 
     public static void forceExecuteDelayedWriteOperation() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Person("Some", "One", Gender.MALE,
                                 "someone@gmail.com", LocalDate.of(2020, 02, 15), "Columbia")),
                         em -> em.createNativeQuery("select * from person").getResultList(),
@@ -63,36 +69,36 @@ public class Samples {
         );
     }
 
-    public static void eachContextHasItsOwnFirstLevelCache() {
-        session(
-                context(
-                        unit(em -> em.persist(new Hero("true hero"))),
-                        unit(em -> em.find(Hero.class, 1L))
+    public static void eachSessionHasItsOwnFirstLevelCache() {
+        db(
+                session(
+                        atomicBlock(em -> em.persist(new Hero("true hero"))),
+                        atomicBlock(em -> em.find(Hero.class, 1L))
                 ),
-                context(
-                        unit(em -> em.find(Hero.class, 1L))
+                session(
+                        atomicBlock(em -> em.find(Hero.class, 1L))
                 )
         );
     }
 
     public static void firstLevelCacheHasCrossTransactionNature() {
-        session(
-                context(
-                        unit(em -> em.persist(new Hero("true hero"))),
-                        unit(em -> em.find(Hero.class, 1L))
+        db(
+                session(
+                        atomicBlock(em -> em.persist(new Hero("true hero"))),
+                        atomicBlock(em -> em.find(Hero.class, 1L))
                 )
         );
     }
 
     public static void retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity() {
-        session(
-                unit(em -> em.find(Hero.class, 1L))
+        db(
+                atomicBlock(em -> em.find(Hero.class, 1L))
         );
     }
 
     public static void retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Hero("true hero")),
                         em -> em.find(Hero.class, 1L)
                 )
@@ -100,8 +106,8 @@ public class Samples {
     }
 
     public static void sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Person("Some", "One", Gender.MALE,
                                 "someone@gmail.com", LocalDate.of(2020, 02, 15), "Columbia")),
                         em -> em.persist(new Person("John", "Doe", Gender.MALE,
@@ -111,8 +117,8 @@ public class Samples {
     }
 
     public static void identityGenerationStrategyInsertsRecordsImmediately() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Hero("Togo")),
                         em -> em.persist(new Hero("Balto"))
                 )
@@ -120,8 +126,8 @@ public class Samples {
     }
 
     public static void mergeUpdatesOnlyWhenNecessary() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> em.persist(new Book("1a-2b-3c", "Someone")),
                         em -> em.merge(new Book("1a-2b-3c", "Someone"))
                 )
@@ -129,20 +135,20 @@ public class Samples {
     }
 
     public static void mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed() {
-        session(
-                unit(em -> em.merge(new Book("1a-2b-3c", "Someone")))
+        db(
+                atomicBlock(em -> em.merge(new Book("1a-2b-3c", "Someone")))
         );
     }
 
     public static void mergeHasOnlyInsertionSemanticWhenSurrogatePrimaryKeyIsUsed() {
-        session(
-                unit(em -> em.merge(new Hero("Togo")))
+        db(
+                atomicBlock(em -> em.merge(new Hero("Togo")))
         );
     }
 
     public static void trackingManagedRecordState() {
-        session(
-                unit(
+        db(
+                atomicBlock(
                         em -> {
                             var someone = new Person("Some", "One", Gender.MALE,
                                     "someone@yandex.ru", LocalDate.of(2020, 02, 15), "Columbia");

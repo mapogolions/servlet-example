@@ -19,24 +19,24 @@ public class Db implements Closeable  {
         return emf;
     }
 
-    public static void session(Unit ...units) {
-        session(context(units));
+    public static void db(AtomicBlock ...blocks) {
+        db(session(blocks));
     }
 
-    public static void session(PersistenceContext...contexts) {
+    public static void db(UnitOfWork ...units) {
         try (var db = new Db("io.github.mapogolions")) {
-            Arrays.asList(contexts).forEach(ctx -> ctx.apply(db.entityManagerFactory()));
+            Arrays.asList(units).forEach(ctx -> ctx.apply(db.entityManagerFactory()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static PersistenceContext context(Unit ...units) {
-        return new PersistenceContext(units);
+    public static UnitOfWork session(AtomicBlock ...blocks) {
+        return new UnitOfWork(blocks);
     }
 
-    public static Unit unit(Consumer<EntityManager> ...fs) {
-        return new Unit(fs);
+    public static AtomicBlock atomicBlock(Consumer<EntityManager> ...fs) {
+        return new AtomicBlock(fs);
     }
 
     @Override
@@ -44,17 +44,17 @@ public class Db implements Closeable  {
         emf.close();
     }
 
-    public static class PersistenceContext {
-        private final Unit[] units;
+    public static class UnitOfWork {
+        private final AtomicBlock[] blocks;
 
-        PersistenceContext(Unit...transactions) {
-            this.units = transactions;
+        UnitOfWork(AtomicBlock ...blocks) {
+            this.blocks = blocks;
         }
 
         public void apply(EntityManagerFactory emf) {
             var em = emf.createEntityManager();
             try {
-                Arrays.asList(units).forEach(unit -> unit.apply(em));
+                Arrays.asList(blocks).forEach(block -> block.apply(em));
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
@@ -63,10 +63,10 @@ public class Db implements Closeable  {
         }
     }
 
-    public static class Unit {
+    public static class AtomicBlock {
         private final Consumer<EntityManager>[] fs;
 
-        Unit(Consumer<EntityManager> ...fs) {
+        AtomicBlock(Consumer<EntityManager> ... fs) {
             this.fs = fs;
         }
 

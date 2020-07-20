@@ -81,7 +81,7 @@ Hibernate:
         person
 ```
 
-#### `eachContextHasItsOwnFirstLevelCache()`
+#### `eachSessionHasItsOwnFirstLevelCache()`
 ```shell script
 Hibernate: 
     insert 
