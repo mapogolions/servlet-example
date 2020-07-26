@@ -3,13 +3,12 @@ package io.github.mapogolions.hibernatecli.basics;
 import io.github.mapogolions.hibernatecli.basics.domain.*;
 
 import java.time.LocalDate;
-import java.util.function.Consumer;
 
 import static io.github.mapogolions.hibernatecli.jpacore.JpaCore.*;
 
 public class Samples {
     public static void getReferenceOnlyCreatesProxyObject() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(em -> em.getReference(Hero.class, 1L))
             )
@@ -17,7 +16,7 @@ public class Samples {
     }
 
     public static void nothingToCommitWhenPersistenceContextIsEmpty() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Person("Some", "One", Gender.MALE,
@@ -31,7 +30,7 @@ public class Samples {
     }
 
     public static void detachRemoveObjectFromPersistenceContext() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Book("1a", "who")),
@@ -42,7 +41,7 @@ public class Samples {
     }
 
     public static void removeTransientObjectFromFirstLevelCacheDoesNotPreventInsertion() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Book("1a", "who")),
@@ -53,7 +52,7 @@ public class Samples {
     }
 
     public static void removeTransientObjectWithNaturalKeyExecutesSelectQuery() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(em -> em.remove(new Book("1a", "who")))
             )
@@ -61,7 +60,7 @@ public class Samples {
     }
 
     public static void removeTransientObjectWithSurrogateKeyDoesNothing() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(em -> em.remove(new Hero("true hero")))
             )
@@ -69,7 +68,7 @@ public class Samples {
     }
 
     public static void forceExecuteDelayedWriteOperation() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Person("Some", "One", Gender.MALE,
@@ -84,7 +83,7 @@ public class Samples {
     }
 
     public static void eachSessionHasItsOwnFirstLevelCache() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     session(
                             atomicBlock(em -> em.persist(new Hero("true hero"))),
@@ -98,7 +97,7 @@ public class Samples {
     }
 
     public static void firstLevelCacheHasCrossTransactionNature() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     session(
                             atomicBlock(em -> em.persist(new Hero("true hero"))),
@@ -109,7 +108,7 @@ public class Samples {
     }
 
     public static void retrievalsFetchEntitiesFromDatabaseIfFirstLevelCacheDoesNotContainEntity() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(em -> em.find(Hero.class, 1L))
             )
@@ -117,7 +116,7 @@ public class Samples {
     }
 
     public static void retrievalsFirstOfAllSearchForEntitiesInFirstLevelCache() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Hero("true hero")),
@@ -128,7 +127,7 @@ public class Samples {
     }
 
     public static void sequenceGenerationStrategyDelayActualInsertionAsLongAsPossible() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Person("Some", "One", Gender.MALE,
@@ -141,7 +140,7 @@ public class Samples {
     }
 
     public static void identityGenerationStrategyInsertsRecordsImmediately() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Hero("Togo")),
@@ -152,7 +151,7 @@ public class Samples {
     }
 
     public static void mergeUpdatesOnlyWhenNecessary() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> em.persist(new Book("1a-2b-3c", "Someone")),
@@ -163,7 +162,7 @@ public class Samples {
     }
 
     public static void mergeIsRoundTripOperationWhenNaturalPrimaryKeyIsUsed() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(em -> em.merge(new Book("1a-2b-3c", "Someone")))
             )
@@ -171,7 +170,7 @@ public class Samples {
     }
 
     public static void mergeHasOnlyInsertionSemanticWhenSurrogatePrimaryKeyIsUsed() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(em -> em.merge(new Hero("Togo")))
             )
@@ -179,7 +178,7 @@ public class Samples {
     }
 
     public static void trackingManagedRecordState() {
-        basicPersistenceUnit(
+        persistenceUnit(UNIT_NAME).accept(
             db(
                     atomicBlock(
                             em -> {
@@ -192,7 +191,5 @@ public class Samples {
         );
     }
 
-    public static void basicPersistenceUnit(Consumer<String> fn) {
-        fn.accept("hibernate-cli.basics");
-    }
+    private static String UNIT_NAME = "hibernate-cli.basics";
 }

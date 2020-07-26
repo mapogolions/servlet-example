@@ -11,12 +11,16 @@ import java.util.function.Consumer;
 public class JpaCore implements Closeable  {
     private final EntityManagerFactory emf;
 
-    public JpaCore(String persistenceUnit) {
-        this.emf = Persistence.createEntityManagerFactory(persistenceUnit);
+    public JpaCore(String unitName) {
+        this.emf = Persistence.createEntityManagerFactory(unitName);
     }
 
     public EntityManagerFactory entityManagerFactory() {
         return emf;
+    }
+
+    public static Consumer<Consumer<String>> persistenceUnit(String unitName) {
+        return fn -> fn.accept(unitName);
     }
 
     public static Consumer<String> db(AtomicBlock ...blocks) {
