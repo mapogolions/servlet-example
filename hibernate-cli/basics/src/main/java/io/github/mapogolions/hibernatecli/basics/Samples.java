@@ -191,5 +191,5 @@ public class Samples {
         );
     }
 
-    private static String UNIT_NAME = "hibernate-cli.basics";
+    private static final String UNIT_NAME = "hibernate-cli.basics";
 }
