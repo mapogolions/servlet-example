@@ -1,9 +1,7 @@
 package io.github.mapogolions.hibernatecli.basics;
 
 import io.github.mapogolions.hibernatecli.basics.domain.*;
-
 import java.time.LocalDate;
-
 import static io.github.mapogolions.hibernatecli.jpacore.JpaCore.*;
 
 public class Samples {

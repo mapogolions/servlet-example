@@ -1,25 +1,26 @@
 #### `many-to-one`
 ```shell script
 Hibernate: 
-    create table public.address (
-       id  bigserial not null,
-       country varchar(255),
-       zipCode varchar(255),
-       primary key (id)
-    )
     
-Hibernate: 
-    create table public.student (
+    create table manytoone.address (
        id  bigserial not null,
-        name varchar(255),
-        address_id int8,
+        country varchar(255),
+        zipCode varchar(255),
         primary key (id)
     )
-
 Hibernate: 
     
-    alter table public.student 
-       add constraint student_address_fkey 
-       foreign key (address_id) 
-       references public.address
+    create table manytoone.person (
+       id  bigserial not null,
+        name varchar(255),
+        permanentResidence_id int8,
+        primary key (id)
+    )
+Hibernate: 
+    
+    alter table manytoone.person 
+       add constraint student_permanent_residence_fkey 
+       foreign key (permanentResidence_id) 
+       references manytoone.address
+
 ```
