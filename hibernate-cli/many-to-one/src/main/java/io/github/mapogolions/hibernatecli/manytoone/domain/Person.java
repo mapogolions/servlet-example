@@ -12,6 +12,6 @@ public class Person {
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(foreignKey = @ForeignKey(name = "student_permanent_residence_fkey"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "person_permanent_residence_fkey"))
     private Address permanentResidence;
 }
