@@ -18,6 +18,7 @@
         <module>one-to-many</module>
         <module>basics</module>
         <module>jpa-core</module>
+        <module>one-to-one</module>
     </modules>
 
     <build>
