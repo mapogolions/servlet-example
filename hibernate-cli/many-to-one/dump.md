@@ -19,8 +19,8 @@ Hibernate:
 Hibernate: 
     
     alter table manytoone.person 
-       add constraint student_permanent_residence_fkey 
-       foreign key (permanentResidence_id) 
+       add constraint student_permanent_address_fkey 
+       foreign key (permanentAddress_id) 
        references manytoone.address
 
 ```
