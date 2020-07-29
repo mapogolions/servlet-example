@@ -10,9 +10,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>one-to-one</artifactId>
+    <modules>
+        <module>unidirectional</module>
+        <module>bidirectional</module>
+    </modules>
+    <groupId>io.github.mapogolions.hibernatecli.onetoone</groupId>
+    <packaging>pom</packaging>
+
     <dependencies>
         <dependency>
-            <groupId>io.github.mapogolions.hibernatecli.jpacore</groupId>
+            <groupId>io.github.mapogolions.hibernatecli</groupId>
             <artifactId>jpa-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
