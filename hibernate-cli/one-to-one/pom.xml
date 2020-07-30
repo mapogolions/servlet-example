@@ -13,6 +13,7 @@
     <modules>
         <module>unidirectional</module>
         <module>bidirectional</module>
+        <module>mapped-by</module>
     </modules>
     <groupId>io.github.mapogolions.hibernatecli.onetoone</groupId>
     <packaging>pom</packaging>
