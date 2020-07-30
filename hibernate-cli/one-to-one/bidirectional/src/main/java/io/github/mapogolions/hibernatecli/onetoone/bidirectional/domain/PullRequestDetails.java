@@ -13,6 +13,6 @@ public class PullRequestDetails {
     private int affectedLines;
 
     @OneToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "request_details_pull_request_fkey"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "pull_request_details_pull_request_fkey"))
     private PullRequest pullRequest;
 }
